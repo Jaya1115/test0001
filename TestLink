@@ -1,0 +1,124 @@
+interface Link
+{
+	public void add(Object data);
+	public int getCount();
+	public boolean isEmpty();
+	public boolean contains(Object obj);
+	public Object get(int index);
+	public void set(int index,Object data);
+}
+class LinkImpl implements Link
+{
+	class Node
+	{	
+		private Object data;//数据
+		private Node next;//下一个节点
+		public Node(Object data){
+			this.data=data;
+		}
+	    public void addNode(Node newNode){
+			if(this.next==null){//当前节点之后无子节点
+				this.next=newNode;
+			}else{//当前节点后有节点
+				this.next.addNode(newNode);
+			}
+			
+		}
+		public boolean containsNode(Object data){
+			if(this.data.equals(data)){
+				return true;
+			}else{
+				if(this.next!=null){
+					return this.next.containsNode(data);
+				}else{
+					return false;
+				}	
+			}
+		}
+		public Object getNode(int index){
+			if(LinkImpl.this.foot++==index){
+				return this.data;
+			}else{
+				return this.next.getNode(index);
+			}
+		}
+
+		public void setNode(int index,Object data){
+			if(LinkImpl.this.foot++==index){
+				this.data=data;
+			}else{
+				this.next.setNode(index,data);
+			}
+		}
+		public void printNode(){		
+			System.out.println(this.data);
+			if(this.next!=null){//当前节点后有节点
+				this.next.printNode();
+			}
+		}
+    }
+	private Node root;//根
+	private int foot;
+	private int count;
+	public void add(Object obj){//添加数据
+		//将数据包装为Node类对象，才可以进行排序
+		Node newNode=new Node(obj);
+		if(this.root==null){//没有根节点
+			this.root=newNode;
+		}else{//根节点存在了
+			root.addNode(newNode);
+		}
+		this.count++;
+	}
+	public void print(){
+		if(this.root!=null){
+			this.root.printNode();
+		}
+	}
+	public int getCount(){
+		return this.count;
+	}	
+	public boolean isEmpty(){
+		return this.count==0;
+	}
+	public boolean contains(Object data){
+		if(this.root==null){
+			return false;
+		}
+		return this.root.containsNode(data);
+		
+	}	
+	public Object get(int index){
+		if(index>this.count){
+			return null;
+		}
+		this.foot=0;
+		return this.root.getNode(index);
+	}
+	public void set(int index,Object data){
+		if(index>this.count){
+			System.out.print("超出范围");
+		}
+		this.foot=0;
+		this.root.setNode(index,data);
+	}
+}
+public class TestLink
+{
+	public static void main(String args[]){
+		Link l=new LinkImpl();
+		l.add("我是根");
+		l.add("我是第二个");
+		l.add("B");
+		l.add("我是第四个");
+		
+		System.out.print(l.getCount());
+		System.out.print(l.isEmpty());
+		System.out.print(l.contains("B"));
+		System.out.print(l.contains("我是第五个"));
+		System.out.println(l.get(1));
+		l.set(1,"我是第三个吗");
+		System.out.println(l.get(1));
+	
+	}
+}

@@ -109,7 +109,7 @@ public class TestDemo{
 		 *一、实例化类
 		 */
 		//1.用户
-		User u1=new User("01","张鑫","123456");
+		User u1=new User("01","黑子","123456");
 		User u2=new User("02","王森","124456");
 		User u3=new User("03","李明","125456");
 		User u4=new User("04","赵兴","126456");
